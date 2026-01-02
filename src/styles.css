@@ -1,0 +1,593 @@
+/* ===== FONTS IMPORT ===== */
+/* Importing Inter for UI and JetBrains Mono for data/numbers */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-main: #0f172a;
+  --bg-panel: #111827;
+  --border: #1f2933;
+
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --critical: #dc2626;
+  --high: #f59e0b;
+  --medium: #3b82f6;
+  --low: #10b981;
+  
+  /* Font Variables */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Patch: Ensure padding doesn't affect width calculations */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ===== SCROLLBARS ===== */
+/* Standard Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+/* Webkit (Chrome/Edge/Safari) */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(148, 163, 184, 0.45);
+}
+
+.today-section::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.2);
+}
+
+.detail-panel::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4);
+}
+
+/* ===== BASE & LAYOUT ===== */
+body {
+  margin: 0;
+  font-family: var(--font-sans); /* Updated Font */
+  background: var(--bg-main);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased; /* Makes text sharper on Mac/iOS */
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 24px);
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  /* Merged: Sticky positioning + Gradient background */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: linear-gradient(180deg, #0b1220, #0a1020);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px); /* Added blur for modern glass effect */
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em; /* Tighter tracking for headings */
+  color: #f8fafc;
+}
+
+.project-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-nav {
+  display: flex;
+  gap: 18px;
+}
+
+.header-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.header-nav a:hover {
+  color: var(--text-main);
+  background: rgba(59,130,246,0.12);
+}
+
+/* ===== CONTROLS ===== */
+.controls {
+  /* Merged: Grid layout preferred over Flex for responsive controls */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  align-items: center;
+  
+  background: var(--bg-panel);
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.controls > * {
+  min-height: 44px;
+}
+
+.controls select,
+.controls input[type="range"],
+.controls input[type="text"] {
+  background: #020617;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 8px 12px; 
+  border-radius: 6px; 
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+
+/* ===== DECISION STRIP ===== */
+.decision-strip {
+  display: grid;
+  /* Merged: Responsive grid columns */
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  
+  /* Merged: Complex radial/linear gradient */
+  background: radial-gradient(120% 120% at 10% 10%, rgba(59,130,246,0.12), transparent),
+              linear-gradient(180deg, #0b1220, #0a1020);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.decision-strip strong {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.decision-strip .metric {
+  /* Merged: Larger font size wins */
+  font-size: 1.6rem; 
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-top: 4px;
+  font-family: var(--font-mono); /* Monospace for numbers */
+  letter-spacing: -0.05em;
+}
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-panel);
+  font-size: 0.9rem;
+}
+
+th {
+  padding: 14px 12px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  /* Merged: Sticky Header */
+  position: sticky;
+  top: 0;
+  background: var(--bg-panel);
+  z-index: 1;
+}
+
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+/* Make CVE IDs or Codes Monospace if they appear in the first column */
+td:first-child,
+.font-mono {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+tr {
+  transition: background 0.15s ease;
+}
+
+tr:hover {
+  background: rgba(59, 130, 246, 0.08);
+  cursor: pointer;
+}
+
+/* Row States */
+.row-active {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.row-patch {
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.row-patch.row-active {
+  background: rgba(16, 185, 129, 0.18);
+}
+
+/* Priorities */
+.priority-critical { color: var(--critical); font-weight: 700; }
+.priority-high { color: var(--high); font-weight: 600; }
+.priority-medium { color: var(--medium); font-weight: 500; }
+.priority-low { color: var(--low); font-weight: 500; }
+
+/* ===== TODAY SECTION ===== */
+.today-section {
+  /* Merged: Layout, Scroll, and Visuals */
+  max-height: 60vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  
+  padding: 20px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  
+  /* Visuals merged */
+  background: linear-gradient(
+    180deg,
+    rgba(16,185,129,0.08),
+    rgba(16,185,129,0.02)
+  );
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-left: 4px solid #10b981;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.today-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ===== DETAIL PANEL ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); /* Slightly darker for focus */
+  backdrop-filter: blur(2px);
+  z-index: 999;
+}
+
+.detail-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  /* Merged: Width logic */
+  width: min(90vw, 400px); /* Slightly wider for readability */
+  
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border);
+  padding: 24px;
+  z-index: 1000;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
+  scrollbar-gutter: stable;
+}
+
+.detail-panel h2 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-top: 0;
+}
+
+.detail-panel ul {
+  background: rgba(255,255,255,0.03);
+  padding: 16px 20px;
+  border-radius: 8px;
+  line-height: 1.7;
+}
+
+/* Animation */
+.slide-in {
+  animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); /* Smoother bezier */
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--text-main);
+}
+
+/* ===== UPLOAD BOX ===== */
+.upload-box {
+  padding: 24px;
+  border: 1px dashed #334155;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background: linear-gradient(180deg, #0b1220, #020617);
+  text-align: center;
+}
+
+.upload-box input {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-sans);
+}
+
+.upload-box .hint {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* ===== CHART ===== */
+.chart-panel {
+  margin-top: 32px;
+  padding: 24px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+  
+.chart-panel canvas,
+.chart-panel svg {
+  display: block;
+  margin: 0 auto;
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+  margin-top: 48px;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-hint {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  opacity: 0.7;
+}
+
+.hint {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 640px) {
+  .project-subtitle {
+    display: none;
+  }
+}
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 640px) {
+  /* 1. Reset specific padding for mobile */
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  /* 2. Adjust title size to prevent cramping */
+  .project-title {
+    font-size: 1.1rem;
+  }
+
+  /* 3. SHOW the subtitle instead of display: none, but make it smaller */
+  .project-subtitle {
+    display: block;      /* Ensure it's visible */
+    font-size: 0.7rem;   /* Scale down font */
+    margin-top: 2px;     /* Add slight spacing */
+    opacity: 0.8;        /* Slight fade for hierarchy */
+  }
+  
+  /* Optional: Adjust controls grid for very small screens */
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+.header-left .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 2.2rem;
+  width: auto;
+  max-height: 36px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e5e7eb;
+  line-height: 1.2;
+}
+
+.project-subtitle {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+}
+
+.header-nav a {
+  margin-left: 16px;
+  font-weight: 500;
+  color: #cbd5f5;
+  text-decoration: none;
+}
+
+.header-nav a:hover {
+  color: #22d3ee;
+}
+/* ================================
+   Docs Page Styling
+================================ */
+
+.docs {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+/* Header */
+.docs-header {
+  margin-bottom: 24px;
+}
+
+.docs h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.docs .hint {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+/* Sections */
+.docs section {
+  margin-top: 28px;
+}
+
+.docs h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 10px;
+}
+
+/* Paragraphs */
+.docs p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #cbd5f5;
+  margin-bottom: 10px;
+}
+
+/* Lists */
+.docs ul {
+  padding-left: 18px;
+  margin-top: 8px;
+}
+
+.docs li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #cbd5f5;
+}
+
+.docs li strong {
+  color: #f8fafc;
+}
+
+/* Formula Block */
+.docs .formula {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-left: 4px solid #22d3ee;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+  overflow-x: auto;
+}
+
+/* Notes */
+.docs .note {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .docs {
+    padding: 18px 16px 32px;
+  }
+
+  .docs h2 {
+    font-size: 1.6rem;
+  }
+
+  .docs h3 {
+    font-size: 1.1rem;
+  }
+}
